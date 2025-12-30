@@ -1,0 +1,126 @@
+/* Base Design System */
+:root {
+    /* Using values from the .dark section of your design as defaults */
+    --background: 0.145 0 0;
+    /* oklch(0.145 0 0) - #1a1a1a equivalent */
+    --foreground: 0.985 0 0;
+    /* oklch(0.985 0 0) */
+
+    --card: 0.145 0 0;
+    --card-foreground: 0.985 0 0;
+
+    --popover: 0.145 0 0;
+    --popover-foreground: 0.985 0 0;
+
+    --primary: 0.985 0 0;
+    --primary-foreground: 0.205 0 0;
+
+    --secondary: 0.269 0 0;
+    --secondary-foreground: 0.985 0 0;
+
+    --muted: 0.269 0 0;
+    --muted-foreground: 0.708 0 0;
+
+    --accent: 0.269 0 0;
+    --accent-foreground: 0.985 0 0;
+
+    --destructive: 0.396 0.141 25.723;
+    --destructive-foreground: 0.637 0.237 25.331;
+
+    --border: 0.269 0 0;
+    --input: 0.269 0 0;
+    --ring: 0.439 0 0;
+
+    --chart-1: 0.488 0.243 264.376;
+    /* Purple-ish */
+    --chart-2: 0.696 0.17 162.48;
+    /* Green/Blue-ish */
+    --chart-3: 0.769 0.188 70.08;
+    --chart-4: 0.627 0.265 303.9;
+    --chart-5: 0.645 0.246 16.439;
+
+    --radius: 0.625rem;
+}
+
+body {
+    background-color: oklch(var(--background));
+    color: oklch(var(--foreground));
+}
+
+/* Animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.6s ease-out;
+}
+
+.animate-slide-down {
+    animation: slide-down 0.5s ease-out;
+}
+
+.animate-slide-down-card {
+    animation: slide-down 0.5s ease-out;
+}
+
+/* Components */
+.strategy-card {
+    transition: all 0.3s ease;
+}
+
+.strategy-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.year-btn {
+    transition: all 0.2s ease;
+}
+
+.year-btn.active {
+    background: linear-gradient(135deg, #a855f7, #3b82f6);
+    /* Purple to Blue gradient */
+    color: white;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
+    border-color: transparent;
+}
+
+.round-btn {
+    transition: all 0.2s ease;
+}
+
+.round-btn:hover,
+.round-btn.active {
+    border-color: #34d399 !important;
+    color: white;
+}
+
+.round-btn.active {
+    background-color: rgba(52, 211, 153, 0.2);
+    box-shadow: 0 0 15px rgba(52, 211, 153, 0.3);
+}
+
+.number-animate {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}

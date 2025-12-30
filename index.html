@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDC Darts Betting Analyzer</title>
+    <meta name="description" content="PDC darts fogadási stratégia elemzés - Underdog vs Favorit összehasonlítás">
+
+    <!-- Tailwind CSS with custom config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'oklch(var(--background))',
+                        foreground: 'oklch(var(--foreground))',
+                        card: 'oklch(var(--card))',
+                        'card-foreground': 'oklch(var(--card-foreground))',
+                        primary: 'oklch(var(--primary))',
+                        'primary-foreground': 'oklch(var(--primary-foreground))',
+                        secondary: 'oklch(var(--secondary))',
+                        'secondary-foreground': 'oklch(var(--secondary-foreground))',
+                        muted: 'oklch(var(--muted))',
+                        'muted-foreground': 'oklch(var(--muted-foreground))',
+                        accent: 'oklch(var(--accent))',
+                        'accent-foreground': 'oklch(var(--accent-foreground))',
+                        destructive: 'oklch(var(--destructive))',
+                        'destructive-foreground': 'oklch(var(--destructive-foreground))',
+                        border: 'oklch(var(--border))',
+                        input: 'oklch(var(--input))',
+                        ring: 'oklch(var(--ring))',
+                        chart1: 'oklch(var(--chart-1))',
+                        chart2: 'oklch(var(--chart-2))',
+                        chart3: 'oklch(var(--chart-3))',
+                        chart4: 'oklch(var(--chart-4))',
+                        chart5: 'oklch(var(--chart-5))',
+                    },
+                    borderRadius: {
+                        lg: 'var(--radius)',
+                        md: 'calc(var(--radius) - 2px)',
+                        sm: 'calc(var(--radius) - 4px)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-[#1a1a1a] text-white min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-8 animate-fade-in">
+
+        <!-- Header Section -->
+        <header class="text-center space-y-3">
+            <h1
+                class="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                PDC Darts Betting Analyzer
+            </h1>
+        </header>
+
+        <!-- Controls (Year & Round Selector inserted here to keep functionality) -->
+        <div class="flex flex-col items-center justify-center gap-6">
+
+            <!-- Year Selector -->
+            <div class="bg-[#2a2a2a] p-3 rounded-2xl border border-gray-700/50 flex gap-3 shadow-lg">
+                <button onclick="loadYear(2026)" id="year-2026"
+                    class="year-btn px-8 py-3 rounded-xl font-bold text-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] text-gray-300">
+                    PDC 2026
+                </button>
+                <button onclick="loadYear(2025)" id="year-2025"
+                    class="year-btn px-8 py-3 rounded-xl font-bold text-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] text-gray-300">
+                    PDC 2025
+                </button>
+            </div>
+
+            <div
+                class="bg-[#2a2a2a] border border-gray-700/50 rounded-lg py-2 px-6 text-sm text-gray-300 shadow-sm -mt-2">
+                Tipp: Több fordulót is kijelölhetsz egyszerre
+            </div>
+
+            <!-- Round Selector (Dynamic) -->
+            <div id="round-container" class="hidden w-full max-w-5xl animate-slide-down">
+                <div id="round-selector" class="flex flex-wrap justify-center gap-3">
+                    <!-- Buttons injected by JS (larger size defined in JS) -->
+                </div>
+            </div>
+
+            <!-- Stake Input (From Design) -->
+            <div class="max-w-md w-full mx-auto">
+                <label for="stake"
+                    class="block text-sm font-medium text-gray-300 mb-2 text-center uppercase tracking-wider">Tét
+                    összege mérkőzésenként (HUF)</label>
+                <input type="number" id="stake" value="1000" placeholder="Tét összege"
+                    class="w-full text-center text-3xl h-16 bg-[#2a2a2a] border border-gray-700 focus:border-purple-500 rounded-xl px-4 transition-colors focus:outline-none text-white shadow-md font-bold"
+                    min="0">
+            </div>
+
+        </div>
+
+        <!-- Biggest Surprise Card -->
+        <div id="surprise-card" class="hidden animate-slide-down max-w-2xl mx-auto">
+            <div
+                class="bg-gradient-to-r from-yellow-500/10 via-yellow-500/20 to-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 text-center">
+                <div class="text-yellow-500 text-xs font-bold uppercase tracking-widest mb-1">A kiválasztott kör
+                    legnagyobb meglepetése</div>
+                <div id="surprise-content">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Winner Banner (From Design - Yellow Card) -->
+        <div id="winner-banner" class="hidden animate-slide-down">
+            <div
+                class="bg-gradient-to-r from-yellow-500/20 via-yellow-400/20 to-yellow-500/20 border border-yellow-500/50 rounded-xl overflow-hidden shadow-lg p-6 text-center space-y-2">
+                <h3 class="text-3xl font-bold text-yellow-400" id="winner-title">
+                    Stratégia nyer!
+                </h3>
+                <p class="text-gray-300 text-lg" id="winner-subtitle">
+                    ROI különbség
+                </p>
+            </div>
+        </div>
+
+        <!-- Stats Comparison Cards (From Design) -->
+        <div class="grid md:grid-cols-2 gap-8">
+
+            <!-- Underdog Strategy Card -->
+            <div
+                class="strategy-card rounded-2xl bg-gradient-to-br from-purple-600/20 to-purple-800/20 border border-purple-500/30 overflow-hidden shadow-2xl">
+                <div class="p-8 space-y-8">
+                    <div class="flex items-center gap-4">
+                        <h2 class="text-3xl font-bold text-gray-100">Underdog stratégia</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Win Rate -->
+                        <div class="text-center p-6 bg-black/30 rounded-xl border border-white/5">
+                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase tracking-wide">Nyerési arány</p>
+                            <p class="text-6xl font-black text-purple-400">
+                                <span id="underdog-winrate">0</span>%
+                            </p>
+                        </div>
+
+                        <!-- Wins/Losses -->
+                        <div class="flex justify-between items-center p-5 bg-black/30 rounded-xl border border-white/5">
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">Nyerések</p>
+                                <p class="text-3xl font-bold text-green-400" id="underdog-wins">0</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-400 mb-1">Vesztések</p>
+                                <p class="text-3xl font-bold text-red-400" id="underdog-losses">0</p>
+                            </div>
+                        </div>
+
+                        <!-- Profit/Loss -->
+                        <div class="text-center p-5 bg-black/30 rounded-xl border border-white/5">
+                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase tracking-wide">Összes
+                                profit/veszteség</p>
+                            <p class="text-4xl font-bold number-animate" id="underdog-profit">
+                                +0 Ft
+                            </p>
+                        </div>
+
+                        <!-- ROI -->
+                        <div class="text-center p-6 bg-black/30 rounded-xl border-2 border-purple-500/50">
+                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase tracking-wide">Megtérülés (ROI)
+                            </p>
+                            <p class="text-5xl font-black number-animate" id="underdog-roi">
+                                0%
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorite Strategy Card -->
+            <div
+                class="strategy-card rounded-2xl bg-gradient-to-br from-blue-600/20 to-blue-800/20 border border-blue-500/30 overflow-hidden shadow-2xl">
+                <div class="p-8 space-y-8">
+                    <div class="flex items-center gap-4">
+                        <h2 class="text-3xl font-bold text-gray-100">Favorit stratégia</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Win Rate -->
+                        <div class="text-center p-6 bg-black/30 rounded-xl border border-white/5">
+                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase tracking-wide">Nyerési arány</p>
+                            <p class="text-6xl font-black text-blue-400">
+                                <span id="favorite-winrate">0</span>%
+                            </p>
+                        </div>
+
+                        <!-- Wins/Losses -->
+                        <div class="flex justify-between items-center p-5 bg-black/30 rounded-xl border border-white/5">
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">Nyerések</p>
+                                <p class="text-3xl font-bold text-green-400" id="favorite-wins">0</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-400 mb-1">Vesztések</p>
+                                <p class="text-3xl font-bold text-red-400" id="favorite-losses">0</p>
+                            </div>
+                        </div>
+
+                        <!-- Profit/Loss -->
+                        <div class="text-center p-5 bg-black/30 rounded-xl border border-white/5">
+                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase tracking-wide">Összes
+                                profit/veszteség</p>
+                            <p class="text-4xl font-bold number-animate" id="favorite-profit">
+                                +0 Ft
+                            </p>
+                        </div>
+
+                        <!-- ROI -->
+                        <div class="text-center p-6 bg-black/30 rounded-xl border-2 border-blue-500/50">
+                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase tracking-wide">Megtérülés (ROI)
+                            </p>
+                            <p class="text-5xl font-black number-animate" id="favorite-roi">
+                                0%
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-sm text-gray-500 pt-12 pb-8">
+            <p id="footer-info">Adatok betöltése...</p>
+        </footer>
+
+        <!-- Loading State -->
+        <div id="loading"
+            class="fixed inset-0 bg-black/80 flex items-center justify-center backdrop-blur-sm z-50 hidden">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-500 mb-4 mx-auto">
+                </div>
+                <p class="text-purple-200 font-bold animate-pulse">Adatok elemzése...</p>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="error" class="fixed inset-0 bg-black/90 flex items-center justify-center backdrop-blur-sm z-50 hidden">
+            <div class="bg-red-900/20 border border-red-500/50 p-8 rounded-2xl max-w-md text-center">
+                <div class="text-5xl mb-4">⚠️</div>
+                <h3 class="text-xl font-bold text-red-400 mb-2">Hiba</h3>
+                <p id="error-message" class="text-red-200">Az adatok betöltése sikertelen.</p>
+                <button onclick="location.reload()"
+                    class="mt-6 px-6 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold transition-colors">
+                    Újrapóbálkozás
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Correct JS Path -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>
