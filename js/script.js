@@ -267,21 +267,8 @@ function calculateAndDisplayStats() {
     favoriteRoiEl.textContent = `${favoriteStats.roi >= 0 ? '+' : ''}${formatNumber(favoriteStats.roi, 1)}%`;
     favoriteRoiEl.className = `text-4xl font-bold number-animate ${favoriteStats.roi >= 0 ? 'text-green-400' : 'text-red-400'}`;
 
-    // Show winner banner
-    const roiDiff = Math.abs(underdogStats.roi - favoriteStats.roi);
-    const winnerBanner = document.getElementById('winner-banner');
-
-    if (roiDiff > 5) {
-        const winner = underdogStats.roi > favoriteStats.roi ? 'underdog' : 'favorite';
-        const winnerTitle = document.getElementById('winner-title');
-        const winnerSubtitle = document.getElementById('winner-subtitle');
-
-        winnerTitle.textContent = `${winner === 'underdog' ? 'Underdog' : 'Favorit'} stratégia nyer!`;
-        winnerSubtitle.textContent = `${formatNumber(roiDiff, 1)}% jobb ROI`;
-        winnerBanner.classList.remove('hidden');
-    } else {
-        winnerBanner.classList.add('hidden');
-    }
+    // Update Chart
+    renderChart(matchesData, stake);
 }
 
 // Event listener
@@ -293,3 +280,25 @@ document.getElementById('stake').addEventListener('input', () => {
 
 // Initialize - load 2026 by default
 loadYear(2026);
+
+// Modal Logic
+function showWelcomeModal() {
+    const modal = document.getElementById('welcome-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    }
+}
+
+function closeWelcomeModal() {
+    const modal = document.getElementById('welcome-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+}
+
+// Show modal on load
+window.addEventListener('load', () => {
+    // Optional: Check if already shown in session if needed, but for now show always as requested
+    setTimeout(showWelcomeModal, 500); // Small delay for animation effect
+});
+

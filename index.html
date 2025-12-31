@@ -7,6 +7,9 @@
     <title>PDC Darts Betting Analyzer</title>
     <meta name="description" content="PDC darts fogadási stratégia elemzés - Underdog vs Favorit összehasonlítás">
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Tailwind CSS with custom config -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -47,7 +50,7 @@
         }
     </script>
 
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -114,18 +117,7 @@
             </div>
         </div>
 
-        <!-- Winner Banner (From Design - Yellow Card) -->
-        <div id="winner-banner" class="hidden animate-slide-down">
-            <div
-                class="bg-gradient-to-r from-yellow-500/20 via-yellow-400/20 to-yellow-500/20 border border-yellow-500/50 rounded-xl overflow-hidden shadow-lg p-6 text-center space-y-2">
-                <h3 class="text-3xl font-bold text-yellow-400" id="winner-title">
-                    Stratégia nyer!
-                </h3>
-                <p class="text-gray-300 text-lg" id="winner-subtitle">
-                    ROI különbség
-                </p>
-            </div>
-        </div>
+
 
         <!-- Stats Comparison Cards (From Design) -->
         <div class="grid md:grid-cols-2 gap-8">
@@ -150,11 +142,11 @@
                         <!-- Wins/Losses -->
                         <div class="flex justify-between items-center p-5 bg-black/30 rounded-xl border border-white/5">
                             <div>
-                                <p class="text-sm text-gray-400 mb-1">Nyerések</p>
+                                <p class="text-sm text-gray-400 mb-1">Nyertes</p>
                                 <p class="text-3xl font-bold text-green-400" id="underdog-wins">0</p>
                             </div>
                             <div class="text-right">
-                                <p class="text-sm text-gray-400 mb-1">Vesztések</p>
+                                <p class="text-sm text-gray-400 mb-1">Vesztes</p>
                                 <p class="text-3xl font-bold text-red-400" id="underdog-losses">0</p>
                             </div>
                         </div>
@@ -200,11 +192,11 @@
                         <!-- Wins/Losses -->
                         <div class="flex justify-between items-center p-5 bg-black/30 rounded-xl border border-white/5">
                             <div>
-                                <p class="text-sm text-gray-400 mb-1">Nyerések</p>
+                                <p class="text-sm text-gray-400 mb-1">Nyertes</p>
                                 <p class="text-3xl font-bold text-green-400" id="favorite-wins">0</p>
                             </div>
                             <div class="text-right">
-                                <p class="text-sm text-gray-400 mb-1">Vesztések</p>
+                                <p class="text-sm text-gray-400 mb-1">Vesztes</p>
                                 <p class="text-3xl font-bold text-red-400" id="favorite-losses">0</p>
                             </div>
                         </div>
@@ -230,6 +222,69 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- Chart Section -->
+        <div class="bg-[#2a2a2a] border border-gray-700/50 rounded-2xl p-6 shadow-xl animate-fade-in mb-12">
+            <h3 class="text-2xl font-bold text-gray-200 mb-6 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                    </svg>
+                    Egyenleg alakulása
+                </div>
+
+                <!-- Fullscreen Button (Visible on mobile) -->
+                <button onclick="toggleChartFullscreen()"
+                    class="md:hidden text-gray-400 hover:text-white p-2 bg-black/20 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                    </svg>
+                </button>
+            </h3>
+
+            <!-- Rotation Overlay (Hidden by default) -->
+            <div id="rotation-overlay"
+                class="fixed inset-0 bg-[#1a1a1a] z-[100] hidden flex-col items-center justify-center text-center p-8 landscape:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-purple-500 mb-6 animate-pulse" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                <h3 class="text-2xl font-bold text-white mb-2">Fordítsd el a készüléket!</h3>
+                <p class="text-gray-400">A teljes képernyős nézet csak fekvő módban érhető el.</p>
+                <button onclick="toggleChartFullscreen()"
+                    class="mt-8 px-6 py-2 border border-gray-600 rounded-lg text-gray-400 hover:text-white">Bezárás</button>
+            </div>
+
+            <!-- Chart Tip -->
+            <div
+                class="bg-[#2a2a2a] border border-gray-700/50 rounded-lg py-2 px-4 text-sm text-gray-400 shadow-sm mb-4 inline-block">
+                Tipp: Kattints a lenti színes körökre a stratégiák ki/bekapcsolásához!
+            </div>
+            <div class="relative h-[400px] w-full group/chart">
+                <canvas id="balanceChart"></canvas>
+
+                <!-- Navigation Arrows (Visible in Fullscreen) -->
+                <button id="chart-prev" onclick="stepChart(-1)"
+                    class="hidden absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-white p-4 rounded-full transition-all active:scale-95 z-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button id="chart-next" onclick="stepChart(1)"
+                    class="hidden absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-white p-4 rounded-full transition-all active:scale-95 z-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -262,7 +317,55 @@
 
     </div>
 
+    <!-- Welcome Modal -->
+    <div id="welcome-modal"
+        class="fixed inset-0 bg-black/90 flex items-center justify-center backdrop-blur-sm z-[60] hidden">
+        <div
+            class="bg-[#2a2a2a] border border-gray-700/50 p-6 md:p-8 rounded-2xl max-w-lg w-full mx-4 shadow-2xl relative animate-slide-up transform transition-all">
+            <button onclick="closeWelcomeModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2
+                class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                Üdvözöllek!</h2>
+            <div class="space-y-4 text-gray-300 leading-relaxed">
+                <p>
+                    Ez az oldal azt vizsgálja, hogy a <strong>PDC Darts</strong> mérkőzéseken melyik fogadási stratégia
+                    lenne nyereségesebb hosszú távon.
+                </p>
+                <div class="bg-black/30 p-4 rounded-xl border border-white/5 space-y-3">
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 rounded-full bg-purple-400 mt-2 shrink-0"></div>
+                        <div>
+                            <strong class="text-purple-400">Underdog stratégia:</strong><br>
+                            Mindig a magasabb szorzójú (esélytelenebb) játékosra teszünk.
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 rounded-full bg-blue-400 mt-2 shrink-0"></div>
+                        <div>
+                            <strong class="text-blue-400">Favorit stratégia:</strong><br>
+                            Mindig az alacsonyabb szorzójú (esélyesebb) játékosra teszünk.
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-400 italic">
+                    A rendszer valós oddsok alapján számolja a profitot és a megtérülést (ROI).
+                </p>
+            </div>
+            <button onclick="closeWelcomeModal()"
+                class="mt-6 w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-purple-500/25">
+                Rendben, értem!
+            </button>
+        </div>
+    </div>
+
     <!-- Correct JS Path -->
+    <script src="js/chart.js"></script>
     <script src="js/script.js"></script>
 </body>
 

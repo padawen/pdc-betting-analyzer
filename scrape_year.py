@@ -18,12 +18,12 @@ from selenium.common.exceptions import (
     WebDriverException
 )
 
-
-# Year-specific URL patterns
-YEAR_URLS = {
-    2026: "https://www.eredmenyek.com/darts/vilag/pdc-vilagbajnoksag/eredmenyek/",
-    2025: "https://www.eredmenyek.com/darts/vilag/pdc-vilagbajnoksag-2024-2025/eredmenyek/",
-}
+# Import URL configuration
+try:
+    from config import YEAR_URLS
+except ImportError:
+    print("Error: config.py not found. Please create it from config.py.example")
+    sys.exit(1)
 
 
 def setup_driver():
@@ -277,7 +277,8 @@ def extract_match_data(driver, match_url):
             "favorite": favorite,
             "favoriteOdds": favorite_odds,
             "favoriteWon": favorite_won,
-            "round": round_name
+            "round": round_name,
+            "id": match_url
         }
         
     except TimeoutException:

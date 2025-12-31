@@ -41,3 +41,4 @@ Thumbs.db
 # Project specific
 matches.json
 *.log
+config.py
