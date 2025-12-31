@@ -1,5 +1,22 @@
 # PDC Darts Eredmények Crawler
 
+## Beállítás
+
+### 1. Config fájl létrehozása
+Először másold le a példa config fájlt:
+
+```bash
+cp config.py.example config.py
+```
+
+Majd szerkeszd a `config.py` fájlt és add meg a megfelelő URL-eket a `YEAR_URLS` dictionary-ben.
+
+### 2. Függőségek telepítése
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Scriptek használata
 
 ### 1. **Teljes év scraping** (`scrape_year.py`)
