@@ -1681,6 +1681,62 @@
       "favoriteWon": false,
       "round": "1/64 döntő",
       "id": "https://www.eredmenyek.com/merkozes/darts/huybrechts-kim-OQVnQ1fc/merk-arno-63U1Q3oH/?mid=YmgJLHPH"
+    },
+    {
+      "playerA": "Humphries L.",
+      "playerB": "van Veen G.",
+      "oddsA": 1.67,
+      "oddsB": 2.27,
+      "underdog": "van Veen G.",
+      "underdogOdds": 2.27,
+      "underdogWon": true,
+      "favorite": "Humphries L.",
+      "favoriteOdds": 1.67,
+      "favoriteWon": false,
+      "round": "Negyeddöntők",
+      "id": "https://www.eredmenyek.com/merkozes/darts/humphries-luke-n34VOAWo/van-veen-gian-jgT1AT29/?mid=WWOXrVUG"
+    },
+    {
+      "playerA": "Littler L.",
+      "playerB": "Ratajski K.",
+      "oddsA": 1.06,
+      "oddsB": 9.75,
+      "underdog": "Ratajski K.",
+      "underdogOdds": 9.75,
+      "underdogWon": false,
+      "favorite": "Littler L.",
+      "favoriteOdds": 1.06,
+      "favoriteWon": true,
+      "round": "Negyeddöntők",
+      "id": "https://www.eredmenyek.com/merkozes/darts/littler-luke-0URN6Xks/ratajski-krzysztof-jNZjSeIT/?mid=KCJF9LX0"
+    },
+    {
+      "playerA": "Anderson G.",
+      "playerB": "Hood J.",
+      "oddsA": 1.4,
+      "oddsB": 3.05,
+      "underdog": "Hood J.",
+      "underdogOdds": 3.05,
+      "underdogWon": false,
+      "favorite": "Anderson G.",
+      "favoriteOdds": 1.4,
+      "favoriteWon": true,
+      "round": "Negyeddöntők",
+      "id": "https://www.eredmenyek.com/merkozes/darts/anderson-gary-MyKZZS6r/hood-justin-MRZVHFYR/?mid=ObkQEtN6"
+    },
+    {
+      "playerA": "Searle R.",
+      "playerB": "Clayton J.",
+      "oddsA": 1.69,
+      "oddsB": 2.22,
+      "underdog": "Clayton J.",
+      "underdogOdds": 2.22,
+      "underdogWon": false,
+      "favorite": "Searle R.",
+      "favoriteOdds": 1.69,
+      "favoriteWon": true,
+      "round": "Negyeddöntők",
+      "id": "https://www.eredmenyek.com/merkozes/darts/clayton-jonny-tx0y2xRD/searle-ryan-UFF3Eh5C/?mid=tEtH2Mw0"
     }
   ]
 }
