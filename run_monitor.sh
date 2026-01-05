@@ -17,8 +17,9 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}=== PDC Darts Monitor ===${NC}"
 
 # Check/Create virtual environment
-if [ ! -d "venv" ]; then
+if [ ! -f "venv/bin/activate" ]; then
     echo "Creating virtual environment..."
+    rm -rf venv
     python3 -m venv venv
 fi
 

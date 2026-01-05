@@ -1737,6 +1737,48 @@
       "favoriteWon": true,
       "round": "Negyeddöntők",
       "id": "https://www.eredmenyek.com/merkozes/darts/clayton-jonny-tx0y2xRD/searle-ryan-UFF3Eh5C/?mid=tEtH2Mw0"
+    },
+    {
+      "playerA": "Littler L.",
+      "playerB": "van Veen G.",
+      "oddsA": 1.37,
+      "oddsB": 3.15,
+      "underdog": "van Veen G.",
+      "underdogOdds": 3.15,
+      "underdogWon": false,
+      "favorite": "Littler L.",
+      "favoriteOdds": 1.37,
+      "favoriteWon": true,
+      "round": "Döntő",
+      "id": "https://www.eredmenyek.com/merkozes/darts/littler-luke-0URN6Xks/van-veen-gian-jgT1AT29/?mid=O8CEFVhB"
+    },
+    {
+      "playerA": "van Veen G.",
+      "playerB": "Anderson G.",
+      "oddsA": 1.52,
+      "oddsB": 2.59,
+      "underdog": "Anderson G.",
+      "underdogOdds": 2.59,
+      "underdogWon": false,
+      "favorite": "van Veen G.",
+      "favoriteOdds": 1.52,
+      "favoriteWon": true,
+      "round": "Elődöntők",
+      "id": "https://www.eredmenyek.com/merkozes/darts/anderson-gary-MyKZZS6r/van-veen-gian-jgT1AT29/?mid=nJ54hl6K"
+    },
+    {
+      "playerA": "Littler L.",
+      "playerB": "Searle R.",
+      "oddsA": 1.09,
+      "oddsB": 8.0,
+      "underdog": "Searle R.",
+      "underdogOdds": 8.0,
+      "underdogWon": false,
+      "favorite": "Littler L.",
+      "favoriteOdds": 1.09,
+      "favoriteWon": true,
+      "round": "Elődöntők",
+      "id": "https://www.eredmenyek.com/merkozes/darts/littler-luke-0URN6Xks/searle-ryan-UFF3Eh5C/?mid=UPJlUJM9"
     }
   ]
 }
